@@ -1,6 +1,13 @@
+machine:
+  java:
+    version: openjdk7
+  environment:
+    RAILS_ENV: test
+    JRUBY_OPTS: -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -X-C -Xcompile.invokedynamic=false --1.9 -J-Xmx2g
+
 dependencies:
   cache_directories:
-    - '/home/ubuntu/.rvm/rubies/ruby-head'
+    - '../.rvm/rubies'
 
   pre:
     - rvm install ruby-head
@@ -10,11 +17,11 @@ dependencies:
     - rvm-exec 2.1.0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
     - rvm-exec 2.2.0-preview1 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
     - rvm-exec ruby-head bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
-    - rvm-exec jruby bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+    - rvm-exec jruby bash -c "bundle check --path=vendor/bundle --gemfile Gemfile.java || bundle install --path=vendor/bundle --gemfile Gemfile.java"
 
 test:
   override:
     - rvm-exec 2.1.0 bundle exec rake
     - rvm-exec 2.2.0-preview1 bundle exec rake
     - rvm-exec ruby-head bundle exec rake
-    - rvm-exec jruby bundle exec rake
+    - BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake
