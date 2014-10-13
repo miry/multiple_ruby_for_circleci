@@ -21,7 +21,5 @@ dependencies:
 
 test:
   override:
-    - rvm-exec 2.1.0 bundle exec rake
-    - rvm-exec 2.2.0-preview1 bundle exec rake
-    - rvm-exec ruby-head bundle exec rake
-    - BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake
+    - 'case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.1.0 bundle exec rake ;; 1) rvm-exec 2.2.0-preview1 bundle exec rake ;; 2) rvm-exec ruby-head bundle exec rake ;; 3) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake ;; esac':
+      parallel: true
