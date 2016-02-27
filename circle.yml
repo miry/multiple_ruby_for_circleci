@@ -12,7 +12,22 @@ dependencies:
 
   override:
     - >
-      gem install rake;
+      case $CIRCLE_NODE_INDEX in
+       0)
+         rvm --ruby-version use 2.2.3
+         ;;
+       1)
+         rvm --ruby-version use 2.3.0
+         ;;
+       2)
+         rvm --ruby-version use jruby
+         ;;
+      esac
+
+    - bundle install:
+      parallel: true
+
+    - >
       case $CIRCLE_NODE_INDEX in
        0)
          rvm-exec 2.2.3 bash -c "bundle check --path=vendor/bundle_2.2 || bundle install --path=vendor/bundle_2.2"
@@ -28,5 +43,6 @@ dependencies:
 
 test:
   override:
+    - bundle exec ruby version
     - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.2.3 bundle exec rake ;; 1) rvm-exec 2.3.0 bundle exec rake ;; 2) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake ;; esac:
         parallel: true
