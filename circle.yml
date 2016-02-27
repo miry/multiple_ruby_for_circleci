@@ -27,3 +27,8 @@ dependencies:
       esac
 
     - gem install bundler
+
+
+test:
+  pre:
+    - ruby --version
