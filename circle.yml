@@ -13,7 +13,6 @@ dependencies:
   pre:
     - env
 
-  override:
     - >
       case $CIRCLE_NODE_INDEX in
        0)
@@ -27,8 +26,3 @@ dependencies:
          ;;
       esac
 
-    - bundle install
-
-test:
-  override:
-    - ruby --version
