@@ -7,28 +7,35 @@ machine:
 
 dependencies:
   cache_directories:
-    - '../.rvm/rubies'
+    - '~/.rvm/rubies'
+    - 'vendor'
+
+  pre:
+    - gem install rake
 
   override:
     - >
       case $CIRCLE_NODE_INDEX in
        0)
-         rvm-exec 2.1.0 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+         rvm-exec 2.2.3 bash -c "bundle check --path=vendor/bundle_2.2 || bundle install --path=vendor/bundle_2.2"
          ;;
        1)
-         rvm-exec 2.2.0-preview1 bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
+         rvm-exec 2.3.0 gem install bundler
+         rvm-exec 2.3.0 bash -c "bundle check --path=vendor/bundle_2.3 || bundle install --path=vendor/bundle_2.3"
          ;;
        2)
-         rvm-exec ruby-head gem install bundler
-         rvm-exec ruby-head bash -c "bundle check --path=vendor/bundle || bundle install --path=vendor/bundle"
-         ;;
-       3)
          rvm-exec jruby gem install bundler
-         rvm-exec jruby bash -c "bundle check --path=vendor/bundle --gemfile Gemfile.java || bundle install --path=vendor/bundle --gemfile Gemfile.java"
+         rvm-exec jruby bash -c "bundle check --path=vendor/bundle_java --gemfile Gemfile.java || bundle install --path=vendor/bundle_java --gemfile Gemfile.java"
          ;;
       esac
 
+database:
+  override:
+    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.2.3 bundle exec rake db:create;; 1) rvm-exec 2.3.0 bundle exec rake db:create;; 2) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake db:create ;; esac:
+        parallel: true
+
+
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.1.0 bundle exec rake ;; 1) rvm-exec 2.2.0-preview1 bundle exec rake ;; 2) rvm-exec ruby-head bundle exec rake ;; 3) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) rvm-exec 2.2.3 bundle exec rake ;; 1) rvm-exec 2.3.0 bundle exec rake ;; 2) BUNDLE_GEMFILE=Gemfile.java rvm-exec jruby bundle exec rake ;; esac:
         parallel: true
