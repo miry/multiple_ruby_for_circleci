@@ -26,19 +26,9 @@ dependencies:
 
     - bundle install
 
-    - >
-      case $CIRCLE_NODE_INDEX in
-       0)
-         rvm-exec 2.2.3 bash -c "bundle check --path=vendor/bundle_2.2 || bundle install --path=vendor/bundle_2.2"
-         ;;
-       1)
-         rvm-exec 2.3.0 bash -c "bundle check --path=vendor/bundle_2.3 || bundle install --path=vendor/bundle_2.3"
-         ;;
-       2)
-         rvm-exec jruby gem install bundler
-         rvm-exec jruby bash -c "bundle check --path=vendor/bundle_java --gemfile Gemfile.java || bundle install --path=vendor/bundle_java --gemfile Gemfile.java"
-         ;;
-      esac
+database:
+  override:
+    - bundle exec ruby version
 
 test:
   override:
