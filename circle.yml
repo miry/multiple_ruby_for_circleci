@@ -24,8 +24,7 @@ dependencies:
          ;;
       esac
 
-    - bundle install:
-      parallel: true
+    - bundle install
 
     - >
       case $CIRCLE_NODE_INDEX in
