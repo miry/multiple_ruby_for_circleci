@@ -30,8 +30,8 @@ dependencies:
 
 database:
   override:
-    - ruby version
+    - ruby --version
 
 test:
   override:
-    - ruby version
+    - ruby --version
