@@ -10,9 +10,10 @@ dependencies:
     - '~/.rvm/rubies'
     - 'vendor'
 
-  override:
+  pre:
     - env
-    - echo $CIRCLE_NODE_INDEX
+
+  override:
     - >
       case $CIRCLE_NODE_INDEX in
        0)
@@ -27,10 +28,6 @@ dependencies:
       esac
 
     - bundle install
-
-database:
-  override:
-    - ruby --version
 
 test:
   override:
