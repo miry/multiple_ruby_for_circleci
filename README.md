@@ -6,3 +6,4 @@ Sample Multi Ruby versions build via CircleCI
 
 [![Circle CI](https://circleci.com/gh/miry/multiple_ruby_for_circleci.svg?style=svg)](https://circleci.com/gh/miry/multiple_ruby_for_circleci)
 
+[![Drone Status](http://drone.mycompany.com/api/badges/miry/multiple_ruby_for_circleci/status.svg)](http://drone.mycompany.com/miry/multiple_ruby_for_circleci)
